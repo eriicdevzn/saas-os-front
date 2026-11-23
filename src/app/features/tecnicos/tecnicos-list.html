@@ -1,0 +1,62 @@
+<div class="page-header">
+  <div>
+    <h1>Técnicos</h1>
+    <p class="page-subtitle">{{ tecnicos().length }} técnico(s) ativo(s)</p>
+  </div>
+  <button class="btn btn-primary" (click)="novo()">
+    <app-icon name="plus" />Novo técnico
+  </button>
+</div>
+
+@if (mostrarForm()) {
+  <form class="panel form-card" [formGroup]="form" (ngSubmit)="salvar()" novalidate>
+    <h3>Novo técnico</h3>
+    <div class="grid">
+      <div class="field span-2">
+        <label for="nome">Nome</label>
+        <input id="nome" formControlName="nome" placeholder="Nome do técnico"
+          [class.is-invalid]="campoInvalido('nome')" />
+        @if (campoInvalido('nome')) { <span class="field-hint">Informe o nome do técnico.</span> }
+      </div>
+      <div class="field">
+        <label for="telefone">Telefone</label>
+        <div class="input-wrap">
+          <input id="telefone" formControlName="telefone" appPhoneMask placeholder="(11) 91234-5678" class="has-prefix" />
+          <span class="input-prefix"><app-icon name="phone" /></span>
+        </div>
+      </div>
+      <div class="field">
+        <label for="especialidade">Especialidade</label>
+        <input id="especialidade" formControlName="especialidade" placeholder="Ex: Ar-condicionado" />
+      </div>
+    </div>
+    <div class="actions">
+      <button type="button" class="btn btn-ghost" (click)="cancelar()">Cancelar</button>
+      <button type="submit" class="btn btn-primary">Salvar técnico</button>
+    </div>
+  </form>
+}
+
+<div class="panel">
+  <table class="data-table">
+    <thead>
+      <tr><th>Nome</th><th>Contato</th><th>Especialidade</th><th></th></tr>
+    </thead>
+    <tbody>
+      @for (tecnico of tecnicos(); track tecnico.id) {
+        <tr>
+          <td><strong>{{ tecnico.nome }}</strong></td>
+          <td>
+            @if (tecnico.telefone) {
+              <span class="contact-cell"><span><app-icon name="phone" />{{ tecnico.telefone }}</span></span>
+            } @else { <span class="muted">—</span> }
+          </td>
+          <td>{{ tecnico.especialidade || '—' }}</td>
+          <td class="actions-cell"><button class="btn btn-danger-text" (click)="inativar(tecnico)">Inativar</button></td>
+        </tr>
+      } @empty {
+        <tr><td colspan="4" class="empty-state">Nenhum técnico cadastrado.</td></tr>
+      }
+    </tbody>
+  </table>
+</div>

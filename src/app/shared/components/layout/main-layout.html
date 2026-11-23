@@ -1,0 +1,51 @@
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">EL</div>
+      <div class="brand-name">
+        <strong>EL Service</strong>
+        <span>gestão de campo</span>
+      </div>
+    </div>
+
+    <nav>
+      <a routerLink="/dashboard" routerLinkActive="active">
+        <app-icon name="dashboard" /><span>Dashboard</span>
+      </a>
+      <a routerLink="/ordens-servico" routerLinkActive="active">
+        <app-icon name="ordens" /><span>Ordens de Serviço</span>
+      </a>
+      <a routerLink="/clientes" routerLinkActive="active">
+        <app-icon name="clientes" /><span>Clientes</span>
+      </a>
+      <a routerLink="/tecnicos" routerLinkActive="active">
+        <app-icon name="tecnicos" /><span>Técnicos</span>
+      </a>
+      <a routerLink="/servicos" routerLinkActive="active">
+        <app-icon name="servicos" /><span>Serviços</span>
+      </a>
+      @if (ehAdmin()) {
+        <a routerLink="/usuarios" routerLinkActive="active">
+          <app-icon name="usuarios" /><span>Usuários</span>
+        </a>
+      }
+    </nav>
+
+    <div class="user">
+      <div class="avatar">{{ iniciais(sessao()?.nome) }}</div>
+      <div class="user-info">
+        <strong>{{ sessao()?.nome }}</strong>
+        <span>{{ sessao()?.email }}</span>
+      </div>
+    </div>
+
+    <button class="logout-full-btn" (click)="sair()">
+      <app-icon name="logout" />
+      <span>Sair</span>
+    </button>
+  </aside>
+
+  <main class="content">
+    <router-outlet />
+  </main>
+</div>

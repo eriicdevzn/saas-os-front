@@ -1,0 +1,13 @@
+# Dependências e arquivos gerados
+node_modules/
+.angular/
+dist/
+coverage/
+
+# Configurações locais e segredos
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log

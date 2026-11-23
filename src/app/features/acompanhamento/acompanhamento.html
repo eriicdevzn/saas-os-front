@@ -1,0 +1,63 @@
+<div class="page">
+  <div class="page-card">
+    <div class="brand-row">
+      <div class="brand-mark">EL</div>
+      <span>EL Service</span>
+    </div>
+
+    @if (!resultado()) {
+      <h1>Acompanhar atendimento</h1>
+      <p class="subtitle">Informe o código enviado pela empresa para ver o andamento do seu serviço — sem precisar criar conta.</p>
+
+      <form [formGroup]="form" (ngSubmit)="buscar()" novalidate>
+        <div class="field">
+          <label for="codigo">Código de acompanhamento</label>
+          <input
+            id="codigo"
+            formControlName="codigo"
+            placeholder="Ex: A1B2C3D4"
+            style="text-transform: uppercase; letter-spacing: 0.06em; font-family: var(--font-mono);"
+          />
+        </div>
+
+        @if (erro()) {
+          <div class="error-banner">
+            <app-icon name="alert" />
+            {{ erro() }}
+          </div>
+        }
+
+        <button type="submit" class="btn btn-primary submit-btn" [disabled]="carregando()">
+          {{ carregando() ? 'Buscando...' : 'Consultar' }}
+        </button>
+      </form>
+    } @else {
+      <div class="result-header">
+        <div>
+          <span class="code-tag">{{ resultado()!.numero }}</span>
+          <h2>{{ resultado()!.titulo }}</h2>
+          <p class="subtitle">Olá, {{ resultado()!.nomeCliente }} — este é o andamento do seu atendimento.</p>
+        </div>
+        <button class="btn btn-ghost" (click)="novaBusca()">Consultar outro código</button>
+      </div>
+
+      <div class="stepper-wrap">
+        <app-status-stepper [status]="resultado()!.status" />
+      </div>
+
+      <dl class="info-list">
+        @if (resultado()!.nomeTecnico) {
+          <div><dt>Técnico responsável</dt><dd>{{ resultado()!.nomeTecnico }}</dd></div>
+        }
+        @if (resultado()!.dataAgendada) {
+          <div><dt>Agendado para</dt><dd>{{ resultado()!.dataAgendada | date: 'dd/MM/yyyy HH:mm' }}</dd></div>
+        }
+        @if (resultado()!.dataConclusao) {
+          <div><dt>Concluído em</dt><dd>{{ resultado()!.dataConclusao | date: 'dd/MM/yyyy HH:mm' }}</dd></div>
+        }
+      </dl>
+    }
+
+    <a routerLink="/login" class="back-link">← Voltar para o login</a>
+  </div>
+</div>

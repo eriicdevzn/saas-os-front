@@ -1,0 +1,66 @@
+<div class="login-page">
+  <div class="login-panel">
+    <div class="panel-brand">
+      <div class="brand-mark">EL</div>
+      <h1>EL Service</h1>
+      <p>A operação da sua assistência técnica, do primeiro chamado à assinatura do cliente.</p>
+    </div>
+    <ul class="panel-highlights">
+      <li><app-icon name="check" />Ordens de serviço com status em tempo real</li>
+      <li><app-icon name="check" />Clientes, técnicos e agenda em um só lugar</li>
+      <li><app-icon name="check" />Pensado para o dia a dia do técnico em campo</li>
+    </ul>
+  </div>
+
+  <div class="login-form-side">
+    <form class="login-card" [formGroup]="form" (ngSubmit)="entrar()" novalidate>
+      <h2>Acesse sua conta</h2>
+      <p class="subtitle">Entre com suas credenciais para continuar</p>
+
+      <div class="field">
+        <label for="email">E-mail</label>
+        <div class="input-wrap">
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            placeholder="voce@empresa.com"
+            [class.is-invalid]="emailInvalido"
+            [class.is-valid]="emailValido"
+            autocomplete="username"
+          />
+          <span class="input-icon" *ngIf="emailValido" style="color: var(--color-success)">
+            <app-icon name="check" />
+          </span>
+        </div>
+        @if (emailInvalido) {
+          <span class="field-hint">Informe um e-mail válido.</span>
+        }
+      </div>
+
+      <div class="field">
+        <label for="senha">Senha</label>
+        <input
+          id="senha"
+          type="password"
+          formControlName="senha"
+          placeholder="••••••••"
+          autocomplete="current-password"
+        />
+      </div>
+
+      @if (erro()) {
+        <div class="error-banner">
+          <app-icon name="alert" />
+          {{ erro() }}
+        </div>
+      }
+
+      <button type="submit" class="btn btn-primary submit-btn" [disabled]="carregando()">
+        {{ carregando() ? 'Entrando...' : 'Entrar' }}
+      </button>
+
+      <a routerLink="/acompanhar" class="tracking-link">Não tem conta? Acompanhe seu atendimento aqui →</a>
+    </form>
+  </div>
+</div>

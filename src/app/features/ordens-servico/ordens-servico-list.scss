@@ -1,0 +1,15 @@
+@use '../../shared/styles/list-page' as *;
+
+.pill {
+  &[data-status='RASCUNHO'] { background: #EEF1F6; color: #475467; }
+  &[data-status='AGUARDANDO_APROVACAO'] { background: var(--color-amber-soft); color: var(--color-amber-dark); }
+  &[data-status='APROVADA'] { background: var(--color-brand-soft); color: var(--color-brand); }
+  &[data-status='AGENDADA'] { background: #E7F1FB; color: #1E6FA8; }
+  &[data-status='EM_DESLOCAMENTO'] { background: #E7F1FB; color: #1E6FA8; }
+  &[data-status='EM_ATENDIMENTO'] { background: #E9E4FB; color: #5B3FC2; }
+  &[data-status='PAUSADA'] { background: var(--color-amber-soft); color: var(--color-amber-dark); }
+  &[data-status='AGUARDANDO_PECA'] { background: var(--color-amber-soft); color: var(--color-amber-dark); }
+  &[data-status='AGUARDANDO_CLIENTE'] { background: var(--color-amber-soft); color: var(--color-amber-dark); }
+  &[data-status='CONCLUIDA'] { background: var(--color-success-soft); color: var(--color-success); }
+  &[data-status='CANCELADA'] { background: var(--color-danger-soft); color: var(--color-danger); }
+}

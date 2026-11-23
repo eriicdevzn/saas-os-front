@@ -1,0 +1,59 @@
+<div class="page-header">
+  <div>
+    <h1>Serviços</h1>
+    <p class="page-subtitle">Catálogo de serviços oferecidos pela empresa</p>
+  </div>
+  <button class="btn btn-primary" (click)="novo()">
+    <app-icon name="plus" />Novo serviço
+  </button>
+</div>
+
+@if (mostrarForm()) {
+  <form class="panel form-card" [formGroup]="form" (ngSubmit)="salvar()" novalidate>
+    <h3>Novo serviço</h3>
+    <div class="grid">
+      <div class="field span-2">
+        <label for="nome">Nome</label>
+        <input id="nome" formControlName="nome" placeholder="Ex: Manutenção de ar-condicionado"
+          [class.is-invalid]="campoInvalido('nome')" />
+        @if (campoInvalido('nome')) { <span class="field-hint">Informe o nome do serviço.</span> }
+      </div>
+      <div class="field">
+        <label for="valorPadrao">Valor padrão</label>
+        <div class="input-wrap">
+          <input id="valorPadrao" type="text" inputmode="decimal" formControlName="valorPadrao"
+            appCurrencyInput class="has-prefix" />
+          <span class="input-prefix">R$</span>
+        </div>
+      </div>
+      <div class="field span-2">
+        <label for="descricao">Descrição</label>
+        <input id="descricao" formControlName="descricao" placeholder="Detalhes do serviço (opcional)" />
+      </div>
+    </div>
+    <div class="actions">
+      <button type="button" class="btn btn-ghost" (click)="cancelar()">Cancelar</button>
+      <button type="submit" class="btn btn-primary">Salvar serviço</button>
+    </div>
+  </form>
+}
+
+<div class="panel">
+  <table class="data-table">
+    <thead>
+      <tr><th>Nome</th><th>Valor padrão</th><th>Descrição</th><th></th></tr>
+    </thead>
+    <tbody>
+      @for (servico of servicos(); track servico.id) {
+        <tr>
+          <td><strong>{{ servico.nome }}</strong></td>
+          <td><span class="code-tag">R$ {{ servico.valorPadrao | number: '1.2-2' }}</span></td>
+          <td>{{ servico.descricao || '—' }}</td>
+          <td class="actions-cell"><button class="btn btn-danger-text" (click)="inativar(servico)">Inativar</button></td>
+        </tr>
+      } @empty {
+        <tr><td colspan="4" class="empty-state">Nenhum serviço cadastrado.</td></tr>
+      }
+    </tbody>
+  </table>
+</div>

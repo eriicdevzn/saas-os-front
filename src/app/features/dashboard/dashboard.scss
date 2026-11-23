@@ -1,0 +1,92 @@
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 1.75rem;
+
+  h1 { font-size: 1.5rem; }
+  .page-subtitle { margin: 0.25rem 0 0; color: var(--color-ink-soft); font-size: 0.88rem; }
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.stat-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.stat-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  app-icon { --icon-size: 20px; }
+
+  &.icon-amber { background: var(--color-amber-soft); color: var(--color-amber-dark); }
+  &.icon-brand { background: var(--color-brand-soft); color: var(--color-brand); }
+  &.icon-info { background: #E7F1FB; color: #1E6FA8; }
+  &.icon-success { background: var(--color-success-soft); color: var(--color-success); }
+}
+
+.stat-body {
+  display: flex;
+  flex-direction: column;
+
+  .stat-number { font-family: var(--font-display); font-size: 1.6rem; font-weight: 800; line-height: 1.1; }
+  .stat-label { color: var(--color-ink-soft); font-size: 0.8rem; margin-top: 0.15rem; }
+}
+
+.revenue-panel {
+  padding: 1.5rem 1.75rem;
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  max-width: 380px;
+}
+
+.revenue-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--color-navy-900);
+  color: var(--color-amber);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  app-icon { --icon-size: 22px; }
+}
+
+.revenue-label {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--color-ink-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  font-weight: 600;
+}
+
+.revenue-value {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--color-navy-900);
+  margin-top: 0.15rem;
+}

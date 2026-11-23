@@ -1,0 +1,19 @@
+@if (cancelada()) {
+  <div class="cancel-banner">Esta ordem de serviço foi cancelada.</div>
+} @else {
+  <ol class="stepper">
+    @for (etapa of etapas; track etapa; let i = $index) {
+      <li class="step" [class.done]="i < etapaAtualIndex()" [class.active]="i === etapaAtualIndex()">
+        <span class="step-dot">
+          @if (i < etapaAtualIndex()) { ✓ } @else { {{ i + 1 }} }
+        </span>
+        <span class="step-label">
+          {{ statusLabel[etapa] }}
+          @if (i === etapaAtualIndex() && rotuloSituacaoEspecial()) {
+            <em>({{ rotuloSituacaoEspecial() }})</em>
+          }
+        </span>
+      </li>
+    }
+  </ol>
+}

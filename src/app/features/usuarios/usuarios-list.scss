@@ -1,0 +1,15 @@
+@use '../../shared/styles/list-page' as *;
+
+.pill-ativo { background: var(--color-success-soft); color: var(--color-success); }
+.pill-inativo { background: var(--color-danger-soft); color: var(--color-danger); }
+
+.you-tag {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--color-brand);
+  background: var(--color-brand-soft);
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  margin-left: 0.4rem;
+  text-transform: uppercase;
+}

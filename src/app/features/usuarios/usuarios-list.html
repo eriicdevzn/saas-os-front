@@ -1,0 +1,91 @@
+<div class="page-header">
+  <div>
+    <h1>Usuários</h1>
+    <p class="page-subtitle">Pessoas com acesso ao sistema da sua empresa</p>
+  </div>
+  <button class="btn btn-primary" (click)="novoUsuario()">
+    <app-icon name="plus" />Novo usuário
+  </button>
+</div>
+
+@if (mostrarForm()) {
+  <form class="panel form-card" [formGroup]="form" (ngSubmit)="salvar()" novalidate>
+    <h3>Novo usuário</h3>
+    <div class="grid">
+      <div class="field">
+        <label for="nome">Nome</label>
+        <input id="nome" formControlName="nome" placeholder="Nome completo"
+          [class.is-invalid]="campoInvalido('nome')" />
+        @if (campoInvalido('nome')) { <span class="field-hint">Informe o nome.</span> }
+      </div>
+
+      <div class="field">
+        <label for="email">E-mail de acesso</label>
+        <input id="email" type="email" formControlName="email" placeholder="pessoa@empresa.com"
+          [class.is-invalid]="campoInvalido('email')" />
+        @if (campoInvalido('email')) { <span class="field-hint">Informe um e-mail válido.</span> }
+      </div>
+
+      <div class="field">
+        <label for="senha">Senha</label>
+        <input id="senha" type="password" formControlName="senha" placeholder="Mínimo 6 caracteres"
+          [class.is-invalid]="campoInvalido('senha')" />
+        @if (campoInvalido('senha')) { <span class="field-hint">Mínimo de 6 caracteres.</span> }
+      </div>
+
+      <div class="field">
+        <label for="perfil">Perfil de acesso</label>
+        <select id="perfil" formControlName="perfil">
+          @for (p of perfis; track p) {
+            <option [value]="p">{{ perfilLabel[p] }}</option>
+          }
+        </select>
+      </div>
+    </div>
+
+    @if (erro()) { <div class="field-hint" style="margin-top: 0.5rem">{{ erro() }}</div> }
+
+    <div class="actions">
+      <button type="button" class="btn btn-ghost" (click)="cancelar()">Cancelar</button>
+      <button type="submit" class="btn btn-primary">Salvar usuário</button>
+    </div>
+  </form>
+}
+
+<div class="panel">
+  <table class="data-table">
+    <thead>
+      <tr><th>Nome</th><th>E-mail</th><th>Perfil</th><th>Situação</th><th></th></tr>
+    </thead>
+    <tbody>
+      @for (usuario of usuarios(); track usuario.id) {
+        <tr>
+          <td>
+            <strong>{{ usuario.nome }}</strong>
+            @if (usuario.id === meuUsuarioId()) { <span class="you-tag">você</span> }
+          </td>
+          <td>{{ usuario.email }}</td>
+          <td>{{ perfilLabel[usuario.perfil] }}</td>
+          <td>
+            @if (usuario.ativo) {
+              <span class="pill pill-ativo">Ativo</span>
+            } @else {
+              <span class="pill pill-inativo">Inativo</span>
+            }
+          </td>
+          <td class="actions-cell">
+            @if (usuario.id !== meuUsuarioId()) {
+              @if (usuario.ativo) {
+                <button class="btn btn-danger-text" (click)="inativar(usuario)">Inativar</button>
+              } @else {
+                <button class="btn btn-ghost" (click)="reativar(usuario)">Reativar</button>
+              }
+            }
+          </td>
+        </tr>
+      } @empty {
+        <tr><td colspan="5" class="empty-state">Nenhum usuário cadastrado.</td></tr>
+      }
+    </tbody>
+  </table>
+</div>

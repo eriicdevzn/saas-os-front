@@ -1,0 +1,113 @@
+<div class="page-header">
+  <div>
+    <h1>Clientes</h1>
+    <p class="page-subtitle">{{ clientes().length }} cliente(s) cadastrado(s)</p>
+  </div>
+  <button class="btn btn-primary" (click)="novoCliente()">
+    <app-icon name="plus" />Novo cliente
+  </button>
+</div>
+
+@if (mostrarForm()) {
+  <form class="panel form-card" [formGroup]="form" (ngSubmit)="salvar()" novalidate>
+    <h3>Novo cliente</h3>
+    <div class="grid">
+      <div class="field span-2">
+        <label for="nome">Nome</label>
+        <input id="nome" formControlName="nome" placeholder="Nome completo ou razão social"
+          [class.is-invalid]="campoInvalido('nome')" [class.is-valid]="campoValido('nome')" />
+        @if (campoInvalido('nome')) { <span class="field-hint">Informe o nome do cliente.</span> }
+      </div>
+
+      <div class="field">
+        <label for="documento">CPF/CNPJ</label>
+        <input id="documento" formControlName="documento" placeholder="000.000.000-00" />
+      </div>
+
+      <div class="field">
+        <label for="telefone">Telefone</label>
+        <div class="input-wrap">
+          <input id="telefone" formControlName="telefone" appPhoneMask placeholder="(11) 91234-5678" class="has-prefix" />
+          <span class="input-prefix"><app-icon name="phone" /></span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="email">E-mail</label>
+        <div class="input-wrap">
+          <input id="email" type="email" formControlName="email" placeholder="cliente@email.com" class="has-prefix"
+            [class.is-invalid]="campoInvalido('email')" [class.is-valid]="campoValido('email')" />
+          <span class="input-prefix"><app-icon name="mail" /></span>
+          @if (campoValido('email')) {
+            <span class="input-icon" style="color: var(--color-success)"><app-icon name="check" /></span>
+          }
+        </div>
+        @if (campoInvalido('email')) { <span class="field-hint">E-mail inválido.</span> }
+      </div>
+
+      <div class="field span-2">
+        <label for="endereco">Endereço</label>
+        <input id="endereco" formControlName="endereco" placeholder="Rua, número, bairro" />
+      </div>
+
+      <div class="field">
+        <label for="cidade">Cidade</label>
+        <input id="cidade" formControlName="cidade" />
+      </div>
+
+      <div class="field">
+        <label for="uf">UF</label>
+        <input id="uf" formControlName="uf" maxlength="2" style="text-transform: uppercase" />
+      </div>
+    </div>
+    <div class="actions">
+      <button type="button" class="btn btn-ghost" (click)="cancelar()">Cancelar</button>
+      <button type="submit" class="btn btn-primary">Salvar cliente</button>
+    </div>
+  </form>
+}
+
+<div class="panel">
+  <div class="table-toolbar">
+    <div class="search-box">
+      <app-icon name="search" />
+      <input
+        type="text"
+        placeholder="Buscar por nome ou documento..."
+        [value]="termoBusca()"
+        (input)="termoBusca.set($any($event.target).value)"
+      />
+    </div>
+  </div>
+
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Documento</th>
+        <th>Contato</th>
+        <th>Cidade/UF</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (cliente of clientesFiltrados(); track cliente.id) {
+        <tr>
+          <td><strong>{{ cliente.nome }}</strong></td>
+          <td>{{ cliente.documento || '—' }}</td>
+          <td>
+            <div class="contact-cell">
+              @if (cliente.telefone) { <span><app-icon name="phone" />{{ cliente.telefone }}</span> }
+              @if (cliente.email) { <span><app-icon name="mail" />{{ cliente.email }}</span> }
+              @if (!cliente.telefone && !cliente.email) { <span class="muted">—</span> }
+            </div>
+          </td>
+          <td>{{ cliente.cidade }}{{ cliente.uf ? '/' + cliente.uf : '' }}</td>
+          <td class="actions-cell"><button class="btn btn-danger-text" (click)="inativar(cliente)">Inativar</button></td>
+        </tr>
+      } @empty {
+        <tr><td colspan="5" class="empty-state">Nenhum cliente encontrado.</td></tr>
+      }
+    </tbody>
+  </table>
+</div>

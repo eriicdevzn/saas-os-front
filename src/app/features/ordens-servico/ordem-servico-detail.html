@@ -1,0 +1,126 @@
+@if (os(); as ordem) {
+  <div class="page-header">
+    <div>
+      <div class="title-row">
+        <span class="code-tag lg">{{ ordem.numero }}</span>
+        <span class="pill" [attr.data-status]="ordem.status">{{ statusLabel[ordem.status] }}</span>
+      </div>
+      <h1>{{ ordem.titulo }}</h1>
+      <p class="page-subtitle">{{ nomeCliente(ordem.clienteId) }} · aberta em {{ ordem.dataAbertura | date: 'dd/MM/yyyy HH:mm' }}</p>
+    </div>
+
+    @if (podeCancel()) {
+      <button class="btn btn-danger-text" (click)="alterarStatus('CANCELADA')">Cancelar OS</button>
+    }
+  </div>
+
+  <div class="panel stepper-panel">
+    <app-status-stepper [status]="ordem.status" />
+  </div>
+
+  @if (proximosStatusPrincipais().length > 0) {
+    <div class="next-actions">
+      <span class="next-actions-label">Avançar para:</span>
+      @for (statusOpcao of proximosStatusPrincipais(); track statusOpcao) {
+        <button class="btn btn-amber" (click)="alterarStatus(statusOpcao)">{{ statusLabel[statusOpcao] }}</button>
+      }
+    </div>
+  }
+
+  <div class="detail-grid">
+    <div class="panel info-panel">
+      <h3>Detalhes do atendimento</h3>
+      <dl>
+        <div><dt>Cliente</dt><dd>{{ nomeCliente(ordem.clienteId) }}</dd></div>
+        <div><dt>Prioridade</dt><dd>{{ ordem.prioridade }}</dd></div>
+        @if (ordem.descricaoProblema) {
+          <div><dt>Problema relatado</dt><dd>{{ ordem.descricaoProblema }}</dd></div>
+        }
+        @if (ordem.diagnostico) {
+          <div><dt>Diagnóstico</dt><dd>{{ ordem.diagnostico }}</dd></div>
+        }
+        @if (ordem.codigoPublico) {
+          <div>
+            <dt>Link de acompanhamento (sem login)</dt>
+            <dd class="tracking-row">
+              <span class="code-tag">{{ ordem.codigoPublico }}</span>
+              <button type="button" class="btn btn-ghost btn-xs" (click)="copiarLinkAcompanhamento(ordem.codigoPublico)">
+                {{ linkCopiado() ? 'Copiado!' : 'Copiar link' }}
+              </button>
+            </dd>
+          </div>
+        }
+      </dl>
+    </div>
+
+    <div class="panel totals-panel">
+      <h3>Resumo financeiro</h3>
+      <div class="totals-row"><span>Serviços</span><strong>R$ {{ ordem.valorServicos | number: '1.2-2' }}</strong></div>
+      <div class="totals-row"><span>Produtos</span><strong>R$ {{ ordem.valorProdutos | number: '1.2-2' }}</strong></div>
+      <div class="totals-row"><span>Desconto</span><strong>− R$ {{ ordem.desconto | number: '1.2-2' }}</strong></div>
+      <div class="totals-row total"><span>Total</span><strong>R$ {{ ordem.valorTotal | number: '1.2-2' }}</strong></div>
+    </div>
+  </div>
+
+  <div class="panel items-panel">
+    <div class="items-header">
+      <h3>Itens / Serviços</h3>
+      <button class="btn btn-ghost" (click)="abrirFormItem()"><app-icon name="plus" />Adicionar item</button>
+    </div>
+
+    @if (mostrarFormItem()) {
+      <form class="form-card inline-form" [formGroup]="formItem" (ngSubmit)="salvarItem()" novalidate>
+        <div class="grid">
+          <div class="field">
+            <label for="servicoId">Serviço do catálogo</label>
+            <select id="servicoId" formControlName="servicoId" (change)="selecionarServico()">
+              <option [value]="0">Item avulso</option>
+              @for (servico of servicosDisponiveis(); track servico.id) {
+                <option [value]="servico.id">{{ servico.nome }}</option>
+              }
+            </select>
+          </div>
+          <div class="field span-2">
+            <label for="descricao">Descrição</label>
+            <input id="descricao" formControlName="descricao" />
+          </div>
+          <div class="field">
+            <label for="quantidade">Quantidade</label>
+            <input id="quantidade" type="number" step="0.01" formControlName="quantidade" />
+          </div>
+          <div class="field">
+            <label for="valorUnitario">Valor unitário</label>
+            <div class="input-wrap">
+              <input id="valorUnitario" type="text" inputmode="decimal" formControlName="valorUnitario" appCurrencyInput class="has-prefix" />
+              <span class="input-prefix">R$</span>
+            </div>
+          </div>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn btn-ghost" (click)="cancelarItem()">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Adicionar item</button>
+        </div>
+      </form>
+    }
+
+    <table class="data-table">
+      <thead>
+        <tr><th>Descrição</th><th>Qtd</th><th>Vlr. unit.</th><th>Total</th></tr>
+      </thead>
+      <tbody>
+        @for (item of ordem.itens; track item.id) {
+          <tr>
+            <td>{{ item.descricao }}</td>
+            <td>{{ item.quantidade }}</td>
+            <td>R$ {{ item.valorUnitario | number: '1.2-2' }}</td>
+            <td><strong>R$ {{ item.valorTotal | number: '1.2-2' }}</strong></td>
+          </tr>
+        } @empty {
+          <tr><td colspan="4" class="empty-state">Nenhum item adicionado ainda.</td></tr>
+        }
+      </tbody>
+    </table>
+  </div>
+} @else {
+  <div class="loading-state">Carregando ordem de serviço...</div>
+}

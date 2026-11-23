@@ -1,0 +1,78 @@
+<div class="page-header">
+  <div>
+    <h1>Ordens de Serviço</h1>
+    <p class="page-subtitle">{{ ordens().length }} ordem(ns) no total</p>
+  </div>
+  <button class="btn btn-amber" (click)="novaOs()">
+    <app-icon name="plus" />Nova OS
+  </button>
+</div>
+
+@if (mostrarForm()) {
+  <form class="panel form-card" [formGroup]="form" (ngSubmit)="salvar()" novalidate>
+    <h3>Abrir nova ordem de serviço</h3>
+    <div class="grid">
+      <div class="field">
+        <label for="clienteId">Cliente</label>
+        <select id="clienteId" formControlName="clienteId" [class.is-invalid]="campoInvalido('clienteId')">
+          <option [value]="0">Selecione um cliente...</option>
+          @for (cliente of clientes(); track cliente.id) {
+            <option [value]="cliente.id">{{ cliente.nome }}</option>
+          }
+        </select>
+        @if (campoInvalido('clienteId')) { <span class="field-hint">Selecione o cliente.</span> }
+      </div>
+      <div class="field">
+        <label for="titulo">Título</label>
+        <input id="titulo" formControlName="titulo" placeholder="Ex: Manutenção preventiva"
+          [class.is-invalid]="campoInvalido('titulo')" />
+        @if (campoInvalido('titulo')) { <span class="field-hint">Informe um título.</span> }
+      </div>
+      <div class="field span-2">
+        <label for="descricaoProblema">Problema relatado</label>
+        <input id="descricaoProblema" formControlName="descricaoProblema" placeholder="O que o cliente relatou (opcional)" />
+      </div>
+    </div>
+    <div class="actions">
+      <button type="button" class="btn btn-ghost" (click)="cancelar()">Cancelar</button>
+      <button type="submit" class="btn btn-amber">Abrir OS</button>
+    </div>
+  </form>
+}
+
+<div class="panel">
+  <div class="table-toolbar">
+    <div class="search-box">
+      <app-icon name="search" />
+      <input
+        type="text"
+        placeholder="Buscar por número, título ou cliente..."
+        [value]="termoBusca()"
+        (input)="termoBusca.set($any($event.target).value)"
+      />
+    </div>
+  </div>
+
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Número</th><th>Cliente</th><th>Título</th><th>Status</th><th>Abertura</th><th>Total</th><th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (os of ordensFiltradas(); track os.id) {
+        <tr>
+          <td><span class="code-tag">{{ os.numero }}</span></td>
+          <td>{{ nomeCliente(os.clienteId) }}</td>
+          <td>{{ os.titulo }}</td>
+          <td><span class="pill" [attr.data-status]="os.status">{{ statusLabel[os.status] }}</span></td>
+          <td>{{ os.dataAbertura | date: 'dd/MM/yyyy HH:mm' }}</td>
+          <td><strong>R$ {{ os.valorTotal | number: '1.2-2' }}</strong></td>
+          <td class="actions-cell"><a class="btn btn-ghost" [routerLink]="['/ordens-servico', os.id]">Abrir →</a></td>
+        </tr>
+      } @empty {
+        <tr><td colspan="7" class="empty-state">Nenhuma ordem de serviço encontrada.</td></tr>
+      }
+    </tbody>
+  </table>
+</div>

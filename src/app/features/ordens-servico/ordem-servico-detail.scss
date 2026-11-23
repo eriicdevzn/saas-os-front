@@ -1,0 +1,131 @@
+@use '../../shared/styles/list-page' as *;
+
+.title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.5rem;
+}
+
+.code-tag.lg { font-size: 0.95rem; padding: 0.3rem 0.7rem; }
+
+h1 { font-size: 1.4rem; margin-top: 0.1rem; }
+
+/* Pílulas de status (mesmo mapa de cores da listagem) */
+.pill {
+  &[data-status='RASCUNHO'] { background: #EEF1F6; color: #475467; }
+  &[data-status='AGUARDANDO_APROVACAO'] { background: var(--color-amber-soft); color: var(--color-amber-dark); }
+  &[data-status='APROVADA'] { background: var(--color-brand-soft); color: var(--color-brand); }
+  &[data-status='AGENDADA'] { background: #E7F1FB; color: #1E6FA8; }
+  &[data-status='EM_DESLOCAMENTO'] { background: #E7F1FB; color: #1E6FA8; }
+  &[data-status='EM_ATENDIMENTO'] { background: #E9E4FB; color: #5B3FC2; }
+  &[data-status='PAUSADA'] { background: var(--color-amber-soft); color: var(--color-amber-dark); }
+  &[data-status='AGUARDANDO_PECA'] { background: var(--color-amber-soft); color: var(--color-amber-dark); }
+  &[data-status='AGUARDANDO_CLIENTE'] { background: var(--color-amber-soft); color: var(--color-amber-dark); }
+  &[data-status='CONCLUIDA'] { background: var(--color-success-soft); color: var(--color-success); }
+  &[data-status='CANCELADA'] { background: var(--color-danger-soft); color: var(--color-danger); }
+}
+
+/* ---- Painel que envolve o stepper de status ---- */
+.stepper-panel {
+  padding: 1.5rem 2rem;
+  margin-bottom: 1rem;
+  overflow-x: auto;
+}
+
+.next-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+
+  &-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--color-ink-faint);
+    margin-right: 0.2rem;
+  }
+}
+
+/* ---- Grid de detalhes + financeiro ---- */
+.detail-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+
+  @media (max-width: 780px) { grid-template-columns: 1fr; }
+}
+
+.info-panel {
+  padding: 1.25rem 1.5rem;
+
+  h3 { font-size: 0.95rem; margin-bottom: 1rem; }
+
+  dl { margin: 0; display: flex; flex-direction: column; gap: 0.75rem; }
+  dl > div { display: flex; flex-direction: column; gap: 0.15rem; }
+  dt { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.03em; color: var(--color-ink-faint); font-weight: 700; }
+  dd { margin: 0; font-size: 0.9rem; color: var(--color-ink); }
+
+  .tracking-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .btn-xs { padding: 0.3rem 0.6rem; font-size: 0.76rem; }
+}
+
+.totals-panel {
+  padding: 1.25rem 1.5rem;
+
+  h3 { font-size: 0.95rem; margin-bottom: 1rem; }
+}
+
+.totals-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  font-size: 0.88rem;
+  color: var(--color-ink-soft);
+  border-bottom: 1px dashed var(--color-border);
+
+  &:last-child { border-bottom: none; }
+
+  &.total {
+    border-top: 1.5px solid var(--color-border);
+    border-bottom: none;
+    margin-top: 0.35rem;
+    padding-top: 0.75rem;
+    font-size: 1.05rem;
+
+    strong { color: var(--color-brand); font-family: var(--font-display); }
+  }
+}
+
+/* ---- Itens ---- */
+.items-panel { padding-bottom: 0.5rem; }
+
+.items-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 1.5rem 1rem;
+
+  h3 { font-size: 0.95rem; }
+}
+
+.inline-form {
+  margin: 0 1.5rem 1rem;
+  box-shadow: none;
+  border-style: dashed;
+}
+
+.loading-state {
+  padding: 3rem;
+  text-align: center;
+  color: var(--color-ink-faint);
+}

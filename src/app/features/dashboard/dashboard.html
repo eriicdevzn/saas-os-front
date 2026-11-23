@@ -1,0 +1,48 @@
+<div class="page-header">
+  <div>
+    <h1>Dashboard</h1>
+    <p class="page-subtitle">Panorama das ordens de serviço da sua empresa</p>
+  </div>
+</div>
+
+<div class="cards">
+  <div class="stat-card">
+    <div class="stat-icon icon-amber"><app-icon name="alert" /></div>
+    <div class="stat-body">
+      <span class="stat-number">{{ contarPorStatus('AGUARDANDO_APROVACAO') }}</span>
+      <span class="stat-label">Aguardando aprovação</span>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon icon-brand"><app-icon name="ordens" /></div>
+    <div class="stat-body">
+      <span class="stat-number">{{ contarPorStatus('AGENDADA', 'EM_DESLOCAMENTO') }}</span>
+      <span class="stat-label">Agendadas</span>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon icon-info"><app-icon name="tecnicos" /></div>
+    <div class="stat-body">
+      <span class="stat-number">{{ contarPorStatus('EM_ATENDIMENTO') }}</span>
+      <span class="stat-label">Em atendimento</span>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon icon-success"><app-icon name="check" /></div>
+    <div class="stat-body">
+      <span class="stat-number">{{ contarPorStatus('CONCLUIDA') }}</span>
+      <span class="stat-label">Concluídas</span>
+    </div>
+  </div>
+</div>
+
+<div class="panel revenue-panel">
+  <div class="revenue-icon"><app-icon name="coin" /></div>
+  <div>
+    <span class="revenue-label">Faturamento (ordens concluídas)</span>
+    <span class="revenue-value">R$ {{ faturamentoConcluidas() | number: '1.2-2' }}</span>
+  </div>
+</div>
